@@ -1,10 +1,24 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
-# Install necessary packages and Wine
+# Set non-interactive mode for apt
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install necessary packages and Wine with retry logic
 RUN dpkg --add-architecture i386 && \
     apt-get update && \
-    apt-get install -y software-properties-common wget unzip xvfb && \
-    apt-get install -y wine64 wine32 libwine libmono-cil-dev winetricks && \
+    apt-get install -y --no-install-recommends \
+        software-properties-common \
+        wget \
+        unzip \
+        xvfb \
+        ca-certificates \
+        gnupg && \
+    wget -qO - https://dl.winehq.org/wine-builds/winehq.key | apt-key add - && \
+    add-apt-repository -y 'deb https://dl.winehq.org/wine-builds/ubuntu/ jammy main' && \
+    apt-get update && \
+    apt-get install -y --install-recommends winehq-stable && \
+    apt-get install -y winetricks && \
+    apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
 # Add non-root user
@@ -13,8 +27,10 @@ RUN useradd -ms /bin/bash windwardhorizon
 # Set working directory
 WORKDIR /home/windwardhorizon
 
-# Download and extract the Windward Horizon server files
-RUN wget -q http://www.tasharen.com/wh/WHServer.zip -O WHServer.zip && \
+# Download and extract the Windward Horizon server files with retry
+RUN for i in 1 2 3; do \
+        wget -q http://www.tasharen.com/wh/WHServer.zip -O WHServer.zip && break || sleep 5; \
+    done && \
     unzip WHServer.zip -d /home/windwardhorizon/server && \
     rm WHServer.zip && \
     chown -R windwardhorizon:windwardhorizon /home/windwardhorizon/server
