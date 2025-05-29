@@ -2,7 +2,7 @@ FROM mono:6.12
 
 # Install required packages
 RUN apt-get update && \
-    apt-get install -y wget unzip && \
+    apt-get install -y wget unzip gosu && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 

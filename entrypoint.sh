@@ -61,5 +61,5 @@ echo "World: $WORLD_NAME"
 echo "Public: $PUBLIC_SERVER"
 echo "Command: $CMD"
 
-# Use su to switch to windwardhorizon user and run the server
-exec su -s /bin/bash windwardhorizon -c "$CMD"
+# Use gosu to switch to windwardhorizon user - designed for Docker containers
+exec gosu windwardhorizon $CMD
