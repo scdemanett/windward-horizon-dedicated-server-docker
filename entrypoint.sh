@@ -2,7 +2,6 @@
 
 # Define paths
 SERVER_DIR="/home/windwardhorizon"
-WORLDS_DIR="/home/windwardhorizon/worlds"
 
 # Check if server executable exists
 if [ ! -f "$SERVER_DIR/WHServer.exe" ]; then

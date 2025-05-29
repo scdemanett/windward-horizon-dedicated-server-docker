@@ -67,7 +67,7 @@ services:
     ports:
       - "5137:5137"
     environment:
-      - SERVER_NAME=My Docker Server
+      - SERVER_NAME=Windward Horizon Dedicated Docker Server
       - SERVER_PORT=5137
       - WORLD_NAME=Adventure World    # For "Adventure World.world" file
       - PUBLIC_SERVER=true
@@ -91,7 +91,7 @@ If you're using a pre-built image from a registry (Docker Hub, GitHub Container 
 ```bash
 docker run -d \
   -p 5137:5137 \
-  -e SERVER_NAME="My Server" \
+  -e SERVER_NAME="My Custom Windward Horizon Server" \
   -e WORLD_NAME="MyWorld" \
   -v /path/to/debug:/home/windwardhorizon/Debug \
   -v /path/to/players:/home/windwardhorizon/Players \
@@ -145,6 +145,14 @@ docker run -d \
 - When specifying `WORLD_NAME`, use only the filename without the `.world` extension
 - The server can create new worlds if none exist with the specified name
 - The `-service` flag is automatically added for proper headless operation
+
+### If You Have Permission Issues
+
+1. **Option 1 (Easier)**: Set your Docker shared folder to allow "Everyone" read/write access
+   - Synology: File Station → Right-click docker folder → Properties → Permission → Everyone: Read/Write
+   - QNAP: File Station → Right-click docker folder → Properties → Share Permissions
+
+2. **Option 2 (More Secure)**: Pre-create the directories with appropriate permissions on your NAS
 
 ## Special Thanks And Credit Where Credit Is Due
 
