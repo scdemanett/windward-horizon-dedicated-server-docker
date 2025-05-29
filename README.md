@@ -133,13 +133,13 @@ This repository contains the necessary files and instructions to run Windward Ho
 ## Prerequisites
 
 - Docker
-- [Windward Horizon](https://store.steampowered.com/app/2665460/Windward_Horizon/) and/or the dedicated server executable from the [Tasharen Discord Server](http://discord.gg/tasharen) Direct Link for the [Windward Horizon Dedicated Server Executable](http://www.tasharen.com/wh/WHServer.zip)
+- [Windward Horizon](https://store.steampowered.com/app/2665460/Windward_Horizon/) and the dedicated server executable from the [Tasharen Discord Server](http://discord.gg/tasharen) Direct Link for the [Windward Horizon Dedicated Server Executable](http://www.tasharen.com/wh/WHServer.zip)
 
 ## Setup Instructions
 
 ### 1. Prepare the Game Files
 
-1. Install Windward Horizon or download the dedicated server executable.
+1. Download the dedicated server executable.
 2. Setup directories to map for `gamefiles` and `worlds`. e.g. `/docker/windward-horizon/gamefiles` and `/docker/windward-horizon/worlds`
 4. Transfer the game files (dedicated server executable) to your `gamefiles` directory e.g. `/docker/windward-horizon/gamefiles`.
 5. Copy your saved world, found in Windows: `%USERPROFILE%/Documents\Windward Horizon\Campaigns` to the `worlds` directory.
