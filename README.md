@@ -12,7 +12,9 @@ docker build -t windward-horizon-dedicated-server .
 ### Run with default settings
 ```bash
 docker run -d \
-  -p 5127:5127 \
+  -p 5137:5137 \
+  -v /docker/windward-horizon/debug:/home/windwardhorizon/Debug \
+  -v /docker/windward-horizon/players:/home/windwardhorizon/Players \
   -v /docker/windward-horizon/worlds:/home/windwardhorizon/worlds \
   windward-horizon-dedicated-server
 ```
@@ -20,11 +22,13 @@ docker run -d \
 ### Run with custom settings
 ```bash
 docker run -d \
-  -p 5127:5127 \
+  -p 5137:5137 \
   -e SERVER_NAME="My Custom Server" \
-  -e SERVER_PORT=5127 \
+  -e SERVER_PORT=5137 \
   -e WORLD_NAME="My World" \
   -e PUBLIC_SERVER=true \
+  -v /docker/windward-horizon/debug:/home/windwardhorizon/Debug \
+  -v /docker/windward-horizon/players:/home/windwardhorizon/Players \
   -v /docker/windward-horizon/worlds:/home/windwardhorizon/worlds \
   windward-horizon-dedicated-server
 ```
@@ -33,10 +37,10 @@ docker run -d \
 
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
-| `SERVER_NAME`   | `Windward Horizon Server` | The name of your server as it appears in the server browser       |
-| `SERVER_PORT`   | `5127`                    | The TCP port the server listens on                                |
+| `SERVER_NAME`   | `Windward Horizon Server` | The name of your server as it appears in the server browser                                   |
+| `SERVER_PORT`   | `5137`                    | The TCP port the server listens on                                                            |
 | `WORLD_NAME`    | `Default World`           | The world filename WITHOUT the .world extension (e.g., for "Adventure.world" use "Adventure") |
-| `PUBLIC_SERVER` | `true`                    | Whether the server appears in the public server list (true/false) |
+| `PUBLIC_SERVER` | `true`                    | Whether the server appears in the public server list (true/false)                             |
 
 ## World File Configuration
 
@@ -61,13 +65,15 @@ services:
   windward-server:
     build: .
     ports:
-      - "5127:5127"
+      - "5137:5137"
     environment:
       - SERVER_NAME=My Docker Server
-      - SERVER_PORT=5127
+      - SERVER_PORT=5137
       - WORLD_NAME=Adventure World    # For "Adventure World.world" file
       - PUBLIC_SERVER=true
     volumes:
+      - /docker/windward-horizon/debug:/home/windwardhorizon/Debug
+      - /docker/windward-horizon/players:/home/windwardhorizon/Players
       - /docker/windward-horizon/worlds:/home/windwardhorizon/worlds
     restart: unless-stopped
 ```
@@ -84,9 +90,11 @@ If you're using a pre-built image from a registry (Docker Hub, GitHub Container 
 
 ```bash
 docker run -d \
-  -p 5127:5127 \
+  -p 5137:5137 \
   -e SERVER_NAME="My Server" \
   -e WORLD_NAME="MyWorld" \
+  -v /path/to/debug:/home/windwardhorizon/Debug \
+  -v /path/to/players:/home/windwardhorizon/Players \
   -v /path/to/worlds:/home/windwardhorizon/worlds \
   your-registry/windward-horizon-dedicated-server:latest
 ```
@@ -94,27 +102,37 @@ docker run -d \
 ### Using Portainer
 1. Pull the image in Portainer's Images section
 2. Create a new container with:
-   - Port mapping: 5127:5127
+   - Port mapping: 5137:5137
    - Environment variables as needed (remember WORLD_NAME is without .world extension)
-   - Volume mapping for worlds directory
+   - Volume mappings:
+     - `/docker/windward-horizon/debug` → `/home/windwardhorizon/Debug`
+     - `/docker/windward-horizon/players` → `/home/windwardhorizon/Players`
+     - `/docker/windward-horizon/worlds` → `/home/windwardhorizon/worlds`
 3. Or import the docker-compose.yml as a Stack
 
 ## Volume Mount
 
 | Host Path | Container Path | Description |
 |-----------|----------------|-------------|
-| `/docker/windward-horizon/worlds` | `/home/windwardhorizon/worlds` | World save files and player data |
+| `/docker/windward-horizon/debug`   | `/home/windwardhorizon/Debug`   | Debug logs       |
+| `/docker/windward-horizon/players` | `/home/windwardhorizon/Players` | Player data      |
+| `/docker/windward-horizon/worlds`  | `/home/windwardhorizon/worlds`  | World save files |
 
-The worlds volume is used to:
-- Load existing world files (with .world extension)
-- Save new worlds created by the server
-- Store player data
-- Persist all game data between container restarts
+The volume mounts are used to:
+- **worlds**: Store and persist world files (with .world extension)
+- **Players**: Store player data
+  - Player save data
+  - Player-related configurations
+- **Debug**: Store debug logs
+  - Server debug output
+  - Error logs and diagnostics
 
 ### Example with relative path:
 ```bash
 docker run -d \
-  -p 5127:5127 \
+  -p 5137:5137 \
+  -v $(pwd)/debug:/home/windwardhorizon/Debug \
+  -v $(pwd)/players:/home/windwardhorizon/Players \
   -v $(pwd)/worlds:/home/windwardhorizon/worlds \
   windward-horizon-dedicated-server
 ```
@@ -129,10 +147,6 @@ docker run -d \
 - The `-service` flag is automatically added for proper headless operation
 
 ## Special Thanks And Credit Where Credit Is Due
-
-Special Thanks to MatureMindedGamers and their video [How to Setup Windward Horizon Dedicated Server (Complete Guide)](https://www.youtube.com/watch?v=PbTe7D1KTvI).
-
-Steam Community Discussions around the dedicated server [Dedicated Server Setup Details](https://steamcommunity.com/app/2665460/discussions/0/599653352265001950/), [Server Executable](https://steamcommunity.com/app/2665460/discussions/0/560246502201600269/).
 
 The [Tasharen Discord Server](http://discord.gg/tasharen) and discussions around running a Docker container with the dedicated server executable.
 

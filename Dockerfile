@@ -23,7 +23,8 @@ RUN wget --user-agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML
     chown -R windwardhorizon:windwardhorizon /home/windwardhorizon
 
 # Create required directories
-RUN mkdir -p /home/windwardhorizon/Players/Debug && \
+RUN mkdir -p /home/windwardhorizon/Debug && \
+    mkdir -p /home/windwardhorizon/Players && \
     mkdir -p /home/windwardhorizon/worlds && \
     chown -R windwardhorizon:windwardhorizon /home/windwardhorizon
 
@@ -36,15 +37,15 @@ RUN chown windwardhorizon:windwardhorizon /home/windwardhorizon/entrypoint.sh &&
 
 # Define environment variables with default values
 ENV SERVER_NAME="Windward Horizon Server" \
-    SERVER_PORT=5127 \
+    SERVER_PORT=5137 \
     WORLD_NAME="Default World" \
     PUBLIC_SERVER=true
 
 # Expose the server port
 EXPOSE ${SERVER_PORT}
 
-# Volume mount point for worlds and player data
-VOLUME ["/home/windwardhorizon/worlds"]
+# Volume mount points for worlds, player data, and debug logs
+VOLUME ["/home/windwardhorizon/Debug", "/home/windwardhorizon/Players", "/home/windwardhorizon/worlds"]
 
 # Switch to non-root user
 USER windwardhorizon

@@ -16,7 +16,7 @@ cd "$SERVER_DIR"
 
 # Set default values if environment variables are not set
 SERVER_NAME="${SERVER_NAME:-Windward Horizon Server}"
-SERVER_PORT="${SERVER_PORT:-5127}"
+SERVER_PORT="${SERVER_PORT:-5137}"
 WORLD_NAME="${WORLD_NAME:-Default World}"
 PUBLIC_SERVER="${PUBLIC_SERVER:-true}"
 
@@ -31,7 +31,7 @@ fi
 # Run the server
 echo "Starting Windward Horizon server..."
 echo "Server Name: $SERVER_NAME"
-echo "TCP Port: $TCP_PORT"
+echo "TCP Port: $SERVER_PORT"
 echo "World: $WORLD_NAME"
 echo "Public: $PUBLIC_SERVER"
 echo "Command: $CMD"
