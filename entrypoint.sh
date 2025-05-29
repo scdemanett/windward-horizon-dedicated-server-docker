@@ -20,7 +20,7 @@ WORLD_NAME="${WORLD_NAME:-Default World}"
 PUBLIC_SERVER="${PUBLIC_SERVER:-true}"
 
 # Build command - use absolute path to worlds directory
-CMD="mono WHServer.exe -name \"$SERVER_NAME\" -tcp $SERVER_PORT -world \"/home/windwardhorizon/worlds/$WORLD_NAME\" -service"
+CMD="mono WHServer.exe -name \"$SERVER_NAME\" -tcp $SERVER_PORT -world \"/home/windwardhorizon/Worlds/$WORLD_NAME\" -service"
 
 # Add -public flag if PUBLIC_SERVER is true
 if [ "$PUBLIC_SERVER" = "true" ]; then
@@ -32,7 +32,7 @@ echo "Starting Windward Horizon server..."
 echo "Server Name: $SERVER_NAME"
 echo "TCP Port: $SERVER_PORT"
 echo "World: $WORLD_NAME"
-echo "World Path: /home/windwardhorizon/worlds/$WORLD_NAME"
+echo "World Path: /home/windwardhorizon/Worlds/$WORLD_NAME"
 echo "Public: $PUBLIC_SERVER"
 echo "Command: $CMD"
 

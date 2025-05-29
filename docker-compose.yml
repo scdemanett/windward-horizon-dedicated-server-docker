@@ -15,7 +15,7 @@ services:
       # Map your worlds directory
       - /docker/windward-horizon/debug:/home/windwardhorizon/Debug
       - /docker/windward-horizon/players:/home/windwardhorizon/Players
-      - /docker/windward-horizon/worlds:/home/windwardhorizon/worlds
+      - /docker/windward-horizon/worlds:/home/windwardhorizon/Worlds
     restart: unless-stopped
     # Uncomment the following lines if you want to see logs
     # logging:

@@ -25,7 +25,7 @@ RUN wget --user-agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML
 # Create required directories
 RUN mkdir -p /home/windwardhorizon/Debug && \
     mkdir -p /home/windwardhorizon/Players && \
-    mkdir -p /home/windwardhorizon/worlds && \
+    mkdir -p /home/windwardhorizon/Worlds && \
     chown -R windwardhorizon:windwardhorizon /home/windwardhorizon
 
 # Copy entrypoint script
@@ -45,7 +45,7 @@ ENV SERVER_NAME="Windward Horizon Server" \
 EXPOSE ${SERVER_PORT}
 
 # Volume mount points for worlds, player data, and debug logs
-VOLUME ["/home/windwardhorizon/Debug", "/home/windwardhorizon/Players", "/home/windwardhorizon/worlds"]
+VOLUME ["/home/windwardhorizon/Debug", "/home/windwardhorizon/Players", "/home/windwardhorizon/Worlds"]
 
 # Switch to non-root user
 USER windwardhorizon

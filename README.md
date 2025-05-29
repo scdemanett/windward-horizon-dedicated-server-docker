@@ -15,7 +15,7 @@ docker run -d \
   -p 5137:5137 \
   -v /docker/windward-horizon/debug:/home/windwardhorizon/Debug \
   -v /docker/windward-horizon/players:/home/windwardhorizon/Players \
-  -v /docker/windward-horizon/worlds:/home/windwardhorizon/worlds \
+  -v /docker/windward-horizon/worlds:/home/windwardhorizon/Worlds \
   windward-horizon-dedicated-server
 ```
 
@@ -29,7 +29,7 @@ docker run -d \
   -e PUBLIC_SERVER=true \
   -v /docker/windward-horizon/debug:/home/windwardhorizon/Debug \
   -v /docker/windward-horizon/players:/home/windwardhorizon/Players \
-  -v /docker/windward-horizon/worlds:/home/windwardhorizon/worlds \
+  -v /docker/windward-horizon/worlds:/home/windwardhorizon/Worlds \
   windward-horizon-dedicated-server
 ```
 
@@ -74,7 +74,7 @@ services:
     volumes:
       - /docker/windward-horizon/debug:/home/windwardhorizon/Debug
       - /docker/windward-horizon/players:/home/windwardhorizon/Players
-      - /docker/windward-horizon/worlds:/home/windwardhorizon/worlds
+      - /docker/windward-horizon/worlds:/home/windwardhorizon/Worlds
     restart: unless-stopped
 ```
 
@@ -95,7 +95,7 @@ docker run -d \
   -e WORLD_NAME="MyWorld" \
   -v /path/to/debug:/home/windwardhorizon/Debug \
   -v /path/to/players:/home/windwardhorizon/Players \
-  -v /path/to/worlds:/home/windwardhorizon/worlds \
+  -v /path/to/worlds:/home/windwardhorizon/Worlds \
   your-registry/windward-horizon-dedicated-server:latest
 ```
 
@@ -107,7 +107,7 @@ docker run -d \
    - Volume mappings:
      - `/docker/windward-horizon/debug` → `/home/windwardhorizon/Debug`
      - `/docker/windward-horizon/players` → `/home/windwardhorizon/Players`
-     - `/docker/windward-horizon/worlds` → `/home/windwardhorizon/worlds`
+     - `/docker/windward-horizon/worlds` → `/home/windwardhorizon/Worlds`
 3. Or import the docker-compose.yml as a Stack
 
 ## Volume Mount
@@ -116,7 +116,7 @@ docker run -d \
 |-----------|----------------|-------------|
 | `/docker/windward-horizon/debug`   | `/home/windwardhorizon/Debug`   | Debug logs       |
 | `/docker/windward-horizon/players` | `/home/windwardhorizon/Players` | Player data      |
-| `/docker/windward-horizon/worlds`  | `/home/windwardhorizon/worlds`  | World save files |
+| `/docker/windward-horizon/worlds`  | `/home/windwardhorizon/Worlds`  | World save files |
 
 The volume mounts are used to:
 - **worlds**: Store and persist world files (with .world extension)
@@ -133,7 +133,7 @@ docker run -d \
   -p 5137:5137 \
   -v $(pwd)/debug:/home/windwardhorizon/Debug \
   -v $(pwd)/players:/home/windwardhorizon/Players \
-  -v $(pwd)/worlds:/home/windwardhorizon/worlds \
+  -v $(pwd)/worlds:/home/windwardhorizon/Worlds \
   windward-horizon-dedicated-server
 ```
 
