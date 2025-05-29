@@ -23,7 +23,7 @@ docker run -d \
 ```bash
 docker run -d \
   -p 5137:5137 \
-  -e SERVER_NAME="My Custom Windward Horizon Server" \
+  -e SERVER_NAME="My Custom Server" \
   -e SERVER_PORT=5137 \
   -e WORLD_NAME="My World" \
   -e PUBLIC_SERVER=true \
@@ -145,33 +145,6 @@ docker run -d \
 - When specifying `WORLD_NAME`, use only the filename without the `.world` extension
 - The server can create new worlds if none exist with the specified name
 - The `-service` flag is automatically added for proper headless operation
-
-## How It Works
-
-This container uses a balanced security approach:
-
-1. **Starts as root** - Allows fixing permissions on startup
-2. **Creates directories** - Ensures all required directories exist
-3. **Sets permissions** - Tries to make directories writable (when possible)
-4. **Drops privileges** - Runs the actual game server as `windwardhorizon` user
-
-This approach provides a good balance between security and compatibility, especially on NAS devices like Synology and QNAP.
-
-## Synology/QNAP Compatibility
-
-The container is designed to work on NAS devices with minimal configuration:
-
-- **Automatic permission handling** - The container attempts to fix permissions at startup
-- **Fallback to host permissions** - If you've set your Docker directory to allow "Everyone" read/write, it will work regardless
-- **No UID/GID configuration needed** - The container handles user management internally
-
-### If You Have Permission Issues
-
-1. **Option 1 (Recommended)**: Set your Docker shared folder to allow "Everyone" read/write access
-   - Synology: File Station → Right-click docker folder → Properties → Permission → Everyone: Read/Write
-   - QNAP: File Station → Right-click docker folder → Properties → Share Permissions
-
-2. **Option 2**: Pre-create the directories with appropriate permissions on your NAS
 
 ## Special Thanks And Credit Where Credit Is Due
 

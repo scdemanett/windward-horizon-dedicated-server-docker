@@ -12,7 +12,7 @@ services:
       - WORLD_NAME=Default World
       - PUBLIC_SERVER=true
     volumes:
-      # Map your Debug, Playuers, and worlds directories
+      # Map your worlds directory
       - /docker/windward-horizon/debug:/home/windwardhorizon/Debug
       - /docker/windward-horizon/players:/home/windwardhorizon/Players
       - /docker/windward-horizon/worlds:/home/windwardhorizon/worlds
