@@ -1,23 +1,8 @@
-FROM ubuntu:22.04
+FROM mono:6.12
 
-# Set non-interactive mode for apt
-ENV DEBIAN_FRONTEND=noninteractive
-
-# Install necessary packages and Wine with retry logic
-RUN dpkg --add-architecture i386 && \
-    apt-get update && \
-    apt-get install -y --no-install-recommends \
-        software-properties-common \
-        wget \
-        unzip \
-        xvfb \
-        ca-certificates \
-        gnupg && \
-    wget -qO - https://dl.winehq.org/wine-builds/winehq.key | apt-key add - && \
-    add-apt-repository -y 'deb https://dl.winehq.org/wine-builds/ubuntu/ jammy main' && \
-    apt-get update && \
-    apt-get install -y --install-recommends winehq-stable && \
-    apt-get install -y winetricks && \
+# Install required packages
+RUN apt-get update && \
+    apt-get install -y wget unzip && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -27,19 +12,18 @@ RUN useradd -ms /bin/bash windwardhorizon
 # Set working directory
 WORKDIR /home/windwardhorizon
 
-# Download and extract the Windward Horizon server files with retry
-RUN for i in 1 2 3; do \
-        wget -q http://www.tasharen.com/wh/WHServer.zip -O WHServer.zip && break || sleep 5; \
-    done && \
-    unzip WHServer.zip -d /home/windwardhorizon/server && \
+# Download and extract the Windward Horizon server files
+RUN wget -q http://www.tasharen.com/wh/WHServer.zip -O WHServer.zip && \
+    unzip WHServer.zip -d /home/windwardhorizon && \
     rm WHServer.zip && \
-    chown -R windwardhorizon:windwardhorizon /home/windwardhorizon/server
-
-# Create directory for worlds volume mount
-RUN mkdir -p /home/windwardhorizon/worlds && \
     chown -R windwardhorizon:windwardhorizon /home/windwardhorizon
 
-# Copy entrypoint script as root
+# Create required directories
+RUN mkdir -p /home/windwardhorizon/Players/Debug && \
+    mkdir -p /home/windwardhorizon/worlds && \
+    chown -R windwardhorizon:windwardhorizon /home/windwardhorizon
+
+# Copy entrypoint script
 COPY entrypoint.sh /home/windwardhorizon/entrypoint.sh
 
 # Change the ownership and permissions of the entrypoint script
@@ -55,7 +39,7 @@ ENV SERVER_NAME="Windward Horizon Server" \
 # Expose the server port
 EXPOSE ${SERVER_PORT}
 
-# Volume mount point for worlds
+# Volume mount point for worlds and player data
 VOLUME ["/home/windwardhorizon/worlds"]
 
 # Switch to non-root user
