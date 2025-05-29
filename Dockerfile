@@ -47,8 +47,5 @@ EXPOSE ${SERVER_PORT}
 # Volume mount points for worlds, player data, and debug logs
 VOLUME ["/home/windwardhorizon/Debug", "/home/windwardhorizon/Players", "/home/windwardhorizon/worlds"]
 
-# Switch to non-root user
-USER windwardhorizon
-
 # Command to run the entrypoint script
 CMD ["bash", "/home/windwardhorizon/entrypoint.sh"]
