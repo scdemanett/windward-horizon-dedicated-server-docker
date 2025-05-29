@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  windward-server:
+    build: .
+    container_name: windward-horizon-server
+    ports:
+      - "5127:5127"
+    environment:
+      - SERVER_NAME=Windward Horizon Docker Server
+      - SERVER_PORT=5127
+      - WORLD_NAME=Default World
+      - PUBLIC_SERVER=true
+    volumes:
+      # Map your local directories to the container
+      # Replace these paths with your actual paths
+      - /docker/windward-horizon/gamefiles:/home/windwardhorizon/gamefiles
+      - /docker/windward-horizon/worlds:/home/windwardhorizon/worlds
+    restart: unless-stopped
+    # Uncomment the following lines if you want to see logs
+    # logging:
+    #   driver: "json-file"
+    #   options:
+    #     max-size: "10m"
+    #     max-file: "3" 
