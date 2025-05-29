@@ -5,13 +5,13 @@ export WINEPREFIX=/home/windwardhorizon/.wine
 export WINEARCH=win64
 
 # Define paths
-GAMEFILES_DIR="/home/windwardhorizon/gamefiles"
+SERVER_DIR="/home/windwardhorizon/server"
 WORLDS_DIR="/home/windwardhorizon/worlds"
 
-# Check if game files exist
-if [ ! -f "$GAMEFILES_DIR/WHServer.exe" ]; then
-    echo "ERROR: WHServer.exe not found in $GAMEFILES_DIR"
-    echo "Please ensure you have copied the game files to the gamefiles volume mount."
+# Check if server executable exists
+if [ ! -f "$SERVER_DIR/WHServer.exe" ]; then
+    echo "ERROR: WHServer.exe not found in $SERVER_DIR"
+    echo "The server download may have failed during image build."
     exit 1
 fi
 
@@ -27,8 +27,8 @@ mkdir -p "$WINEPREFIX/drive_c/users/windwardhorizon/Documents/Windward Horizon/C
 # Link the worlds directory
 ln -sf "$WORLDS_DIR" "$WINEPREFIX/drive_c/users/windwardhorizon/Documents/Windward Horizon/Campaigns"
 
-# Navigate to the game files directory
-cd "$GAMEFILES_DIR"
+# Navigate to the server directory
+cd "$SERVER_DIR"
 
 # Set default values if environment variables are not set
 SERVER_NAME="${SERVER_NAME:-Windward Horizon Server}"

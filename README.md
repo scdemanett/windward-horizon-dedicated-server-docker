@@ -1,6 +1,6 @@
 # Windward Horizon Dedicated Server Docker
 
-This Docker image runs a Windward Horizon dedicated server using Wine on Linux.
+This Docker image runs a Windward Horizon dedicated server using Wine on Linux. The server executable is automatically downloaded during the image build process.
 
 ## Quick Start
 
@@ -13,7 +13,6 @@ docker build -t windward-horizon-dedicated-server .
 ```bash
 docker run -d \
   -p 5127:5127 \
-  -v /docker/windward-horizon/gamefiles:/home/windwardhorizon/gamefiles \
   -v /docker/windward-horizon/worlds:/home/windwardhorizon/worlds \
   windward-horizon-dedicated-server
 ```
@@ -26,7 +25,6 @@ docker run -d \
   -e SERVER_PORT=5127 \
   -e WORLD_NAME="My World" \
   -e PUBLIC_SERVER=true \
-  -v /docker/windward-horizon/gamefiles:/home/windwardhorizon/gamefiles \
   -v /docker/windward-horizon/worlds:/home/windwardhorizon/worlds \
   windward-horizon-dedicated-server
 ```
@@ -63,7 +61,6 @@ services:
       - WORLD_NAME=Adventure World
       - PUBLIC_SERVER=true
     volumes:
-      - /docker/windward-horizon/gamefiles:/home/windwardhorizon/gamefiles
       - /docker/windward-horizon/worlds:/home/windwardhorizon/worlds
     restart: unless-stopped
 ```
@@ -82,7 +79,6 @@ If you're using a pre-built image from a registry (Docker Hub, GitHub Container 
 docker run -d \
   -p 5127:5127 \
   -e SERVER_NAME="My Server" \
-  -v /path/to/gamefiles:/home/windwardhorizon/gamefiles \
   -v /path/to/worlds:/home/windwardhorizon/worlds \
   your-registry/windward-horizon-dedicated-server:latest
 ```
@@ -92,23 +88,24 @@ docker run -d \
 2. Create a new container with:
    - Port mapping: 5127:5127
    - Environment variables as needed
-   - Volume mappings for gamefiles and worlds
+   - Volume mapping for worlds directory
 3. Or import the docker-compose.yml as a Stack
 
-## Volume Mounts
-
-The server requires two volume mounts:
+## Volume Mount
 
 | Host Path | Container Path | Description |
 |-----------|----------------|-------------|
-| `/docker/windward-horizon/gamefiles` | `/home/windwardhorizon/gamefiles` | Dedicated server executable |
 | `/docker/windward-horizon/worlds` | `/home/windwardhorizon/worlds` | World save files |
 
-### Example with relative paths:
+The worlds volume is used to:
+- Load existing world files
+- Save new worlds created by the server
+- Persist world data between container restarts
+
+### Example with relative path:
 ```bash
 docker run -d \
   -p 5127:5127 \
-  -v $(pwd)/gamefiles:/home/windwardhorizon/gamefiles \
   -v $(pwd)/worlds:/home/windwardhorizon/worlds \
   windward-horizon-dedicated-server
 ```
@@ -116,9 +113,9 @@ docker run -d \
 ## Notes
 
 - The server runs under Wine on Linux, which may have some performance overhead compared to native Windows
-- The `WHServer.exe` file must be placed in the gamefiles volume directory before starting the container
+- The server executable is automatically downloaded from the official source during image build
 - World files should be placed in the worlds volume directory
-- The container will exit with an error if `WHServer.exe` is not found in the gamefiles directory
+- The server can create new worlds if none exist with the specified name
 
 ## Special Thanks And Credit Where Credit Is Due
 
@@ -133,14 +130,16 @@ This repository contains the necessary files and instructions to run Windward Ho
 ## Prerequisites
 
 - Docker
-- [Windward Horizon](https://store.steampowered.com/app/2665460/Windward_Horizon/) and the dedicated server executable from the [Tasharen Discord Server](http://discord.gg/tasharen) Direct Link for the [Windward Horizon Dedicated Server Executable](http://www.tasharen.com/wh/WHServer.zip)
+- Your world save files (optional - the server can create new worlds)
 
 ## Setup Instructions
 
-### 1. Prepare the Game Files
+### 1. Prepare World Files (Optional)
 
-1. Download the dedicated server executable.
-2. Setup directories to map for `gamefiles` and `worlds`. e.g. `/docker/windward-horizon/gamefiles` and `/docker/windward-horizon/worlds`
-4. Transfer the game files (dedicated server executable) to your `gamefiles` directory e.g. `/docker/windward-horizon/gamefiles`.
-5. Copy your saved world, found in Windows: `%USERPROFILE%/Documents\Windward Horizon\Campaigns` to the `worlds` directory.
-6. Map network ports if necessary, the container is set to use port 5127 by default.
+If you have existing world saves:
+1. Create a directory for your worlds, e.g., `/docker/windward-horizon/worlds`
+2. Copy your saved worlds from Windows: `%USERPROFILE%/Documents\Windward Horizon\Campaigns` to the worlds directory
+
+### 2. Run the Server
+
+The server executable is automatically included in the Docker image. Simply run the container with your desired configuration.

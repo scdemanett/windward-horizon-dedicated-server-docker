@@ -13,8 +13,14 @@ RUN useradd -ms /bin/bash windwardhorizon
 # Set working directory
 WORKDIR /home/windwardhorizon
 
-# Create directories for volume mounts
-RUN mkdir -p /home/windwardhorizon/gamefiles /home/windwardhorizon/worlds && \
+# Download and extract the Windward Horizon server files
+RUN wget -q http://www.tasharen.com/wh/WHServer.zip -O WHServer.zip && \
+    unzip WHServer.zip -d /home/windwardhorizon/server && \
+    rm WHServer.zip && \
+    chown -R windwardhorizon:windwardhorizon /home/windwardhorizon/server
+
+# Create directory for worlds volume mount
+RUN mkdir -p /home/windwardhorizon/worlds && \
     chown -R windwardhorizon:windwardhorizon /home/windwardhorizon
 
 # Copy entrypoint script as root
@@ -33,8 +39,8 @@ ENV SERVER_NAME="Windward Horizon Server" \
 # Expose the server port
 EXPOSE ${SERVER_PORT}
 
-# Volume mount points
-VOLUME ["/home/windwardhorizon/gamefiles", "/home/windwardhorizon/worlds"]
+# Volume mount point for worlds
+VOLUME ["/home/windwardhorizon/worlds"]
 
 # Switch to non-root user
 USER windwardhorizon
